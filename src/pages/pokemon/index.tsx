@@ -15,24 +15,43 @@ const Pokemon = () => {
     const pokemonChoosed = await getPokemon(userSearch);
     setFavoritePokemons([...favoritePokemons, pokemonChoosed]);
   };
-  console.log({favoritePokemons})
+  console.log({ favoritePokemons });
   useEffect(() => {
     if (pokemonList) getAllPokemons();
   }, []);
   return (
     <>
       <h2>Favorite pokemon</h2>
+      {favoritePokemons.map((pokemon) => (
+        <ul key={pokemon}>
+          <li>
+            {pokemon.name}:
+            <ul>
+              <p>abilities:</p> {pokemon.abilities.map((ability: {[key: string]: {name: string, url: string}}) => (
+              console.log(ability),
+              <li key={ability.ability.url}>
+                {ability.ability.name}
+              </li>
+            ))}
+              <p>moves:</p> {pokemon.moves.map((move: {[key: string]: {name: string, url: string}}) => (
+              <li key={move.move.url}>
+                {move.move.name}
+              </li>
+            ))}
+            </ul>
+          </li>
+        </ul>
+      ))}
       <form>
           <>
               <label htmlFor="pokemon">find your pokemon</label>
-              <input list='pokemon' name='pokemon' id="pokemon" onChange={(e) => {
+              <input list='pokemon' name='pokemon' id="pokemon" onChange={ (e) => {
                 setUserSearch(e.currentTarget.value);
-                setPokemonList(pokemonList.filter(
-                  (pokemon: string) => pokemon.includes(e.currentTarget.value),
-                ));
+                setPokemonList(pokemonList
+                  .filter((pokemon: string) => pokemon.includes(e.currentTarget.value)));
               }}/>
           </>
-          <button type="button" onClick={(e) => pokemonSearch(e)}>Search</button>
+          <button type="submit" onClick={(e) => pokemonSearch(e)}>Search</button>
       </form>
       <Pagination
         currentPage={2}

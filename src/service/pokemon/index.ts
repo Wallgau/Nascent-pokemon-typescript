@@ -1,12 +1,12 @@
-export const getPokemons = () => {
-  const result = fetch(`https://pokeapi.co/api/v2/pokemon?limit=${1700}`, {
+export const getPokemons = async () => {
+  const result = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${1700}`, {
     headers: {
       method: 'GET',
     },
-  })
-    .then((res) => res.json())
+  });
+  const data = result.json()
     .then((res) => res.results.map((response: { name: string, url: string }) => response.name));
-  return result;
+  return data;
 };
 
 export const getPokemon = async (pokemonName: string) => {
@@ -15,7 +15,6 @@ export const getPokemon = async (pokemonName: string) => {
       method: 'POST',
     },
   });
-  const data = result.json()
-    .then((res) => res.results.map((response: { name: string, url: string }) => response.name));
+  const data = result.json().then((res) => res);
   return data;
 };
