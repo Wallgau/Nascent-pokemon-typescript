@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { v4 } from 'uuid';
 import { getPokemons, getPokemon } from 'service/pokemon';
 import Pagination from '../../components/pagination';
 
@@ -21,38 +22,51 @@ const Pokemon = () => {
   }, []);
   return (
     <>
+      <form>
+        <>
+          <label htmlFor='pokemon'>find your pokemon</label>
+          <input
+            list='pokemon'
+            name='pokemon'
+            id='pokemon'
+            onChange={(e) => {
+              setUserSearch(e.currentTarget.value);
+              setPokemonList(
+                pokemonList.filter((pokemon: string) => pokemon.includes(e.currentTarget.value)),
+              );
+            }}
+          />
+        </>
+        <button type='submit' onClick={(e) => pokemonSearch(e)}>
+          Add to Favorites
+        </button>
+      </form>
       <h2>Favorite pokemon</h2>
       {favoritePokemons.map((pokemon) => (
-        <ul key={pokemon}>
+        <ul key={v4()}>
           <li>
             {pokemon.name}:
+            <img
+              alt={`${pokemon.name} picture`}
+              src={pokemon.sprites.back_default}
+            />
             <ul>
-              <p>abilities:</p> {pokemon.abilities.map((ability: {[key: string]: {name: string, url: string}}) => (
-              console.log(ability),
-              <li key={ability.ability.url}>
-                {ability.ability.name}
-              </li>
-            ))}
-              <p>moves:</p> {pokemon.moves.map((move: {[key: string]: {name: string, url: string}}) => (
-              <li key={move.move.url}>
-                {move.move.name}
-              </li>
-            ))}
+              <p>abilities:</p>{' '}
+              {pokemon.abilities.map(
+                (ability: { [key: string]: { name: string; url: string } }) => (
+                  (<li key={ability.ability.url}>{ability.ability.name}</li>)
+                ),
+              )}
+              <p>moves:</p>{' '}
+              {pokemon.moves.map(
+                (move: { [key: string]: { name: string; url: string } }) => (
+                  <li key={move.move.url}>{move.move.name}</li>
+                ),
+              )}
             </ul>
           </li>
         </ul>
       ))}
-      <form>
-          <>
-              <label htmlFor="pokemon">find your pokemon</label>
-              <input list='pokemon' name='pokemon' id="pokemon" onChange={ (e) => {
-                setUserSearch(e.currentTarget.value);
-                setPokemonList(pokemonList
-                  .filter((pokemon: string) => pokemon.includes(e.currentTarget.value)));
-              }}/>
-          </>
-          <button type="submit" onClick={(e) => pokemonSearch(e)}>Search</button>
-      </form>
       <Pagination
         currentPage={2}
         numberOfPages={3}
