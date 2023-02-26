@@ -2,14 +2,20 @@ import { useEffect, useState } from 'react';
 import { v4 } from 'uuid';
 import { getPokemons, getPokemon } from 'service/pokemon';
 import Pagination from '../../components/pagination';
+import { useSelector } from 'react-redux';
+import { fetchPokemons } from '../../core/actions/pokemons';
+import { useAppDispatch } from '../../core/hooks';
+
 
 const Pokemon = () => {
+  const dispatch = useAppDispatch();
+  const pokemons = useSelector((state: any) => state.pokemons)
   const [pokemonList, setPokemonList] = useState([]);
   const [favoritePokemons, setFavoritePokemons] = useState<any[]>([]);
   const [userSearch, setUserSearch] = useState('');
   const getAllPokemons = async () => {
-    const data = await getPokemons();
-    setPokemonList(data);
+    dispatch(fetchPokemons());
+    //setPokemonList(data);
   };
   const pokemonSearch = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
