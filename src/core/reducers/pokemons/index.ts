@@ -1,17 +1,11 @@
 import { ACTION_TYPES } from '../../constants/pokemons';
 
 export interface PokemonsType {
-    pokemons: {
-        name: string,
-        url: string
-    }[]
+    pokemons: string[]
 }
 
 const initialState = {
-    pokemons: [{
-        name: "",
-        url: ""
-    }]
+    pokemons: []
   }
   
   const pokemonsReducer = (state: PokemonsType = initialState, action: any) => {

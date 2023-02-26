@@ -9,44 +9,45 @@ import { useAppDispatch } from '../../core/hooks';
 
 const Pokemon = () => {
   const dispatch = useAppDispatch();
-  const pokemons = useSelector((state: any) => state.pokemons)
-  const [pokemonList, setPokemonList] = useState([]);
+  const pokemons = useSelector((state: any) => state.pokemonsReducer.pokemons)
+  const [pokemonList, setPokemonList] = useState([...pokemons]);
   const [favoritePokemons, setFavoritePokemons] = useState<any[]>([]);
   const [userSearch, setUserSearch] = useState('');
-  const getAllPokemons = async () => {
-    dispatch(fetchPokemons());
-    //setPokemonList(data);
-  };
   const pokemonSearch = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const pokemonChoosed = await getPokemon(userSearch);
     setFavoritePokemons([...favoritePokemons, pokemonChoosed]);
   };
-  console.log({ favoritePokemons });
+  console.log({ favoritePokemons, pokemons });
   useEffect(() => {
-    if (pokemonList) getAllPokemons();
+    if (!pokemons.length) dispatch(fetchPokemons())
   }, []);
+
+  useEffect(() => {
+    if (pokemons.length && !pokemonList.length) setPokemonList([...pokemons])
+  }, [pokemons]);
+  console.log({pokemonList})
   return (
     <>
-      <form>
-        <>
-          <label htmlFor='pokemon'>find your pokemon</label>
-          <input
-            list='pokemon'
-            name='pokemon'
-            id='pokemon'
-            onChange={(e) => {
-              setUserSearch(e.currentTarget.value);
-              setPokemonList(
-                pokemonList.filter((pokemon: string) => pokemon.includes(e.currentTarget.value)),
-              );
-            }}
-          />
-        </>
-        <button type='submit' onClick={(e) => pokemonSearch(e)}>
+      <label htmlFor="pokemon-select">Select a pokemon</label>
+      <input list="pokemon-select" 
+          value={userSearch}
+          onChange={(e) => {
+            setUserSearch(e.currentTarget.value);
+            setPokemonList(
+              pokemonList.filter((pokemon: string) => pokemon.includes(e.currentTarget.value)),
+            );
+          }}/>
+      <datalist id="pokemon-select">
+        {
+          pokemonList.map((pokemon: string) => (
+            <option value={pokemon}>{pokemon}</option>
+          ))
+        }
+      </datalist>
+      <button type='submit' onClick={(e) => pokemonSearch(e)}>
           Add to Favorites
         </button>
-      </form>
       <h2>Favorite pokemon</h2>
       {favoritePokemons.map((pokemon) => (
         <ul key={v4()}>
