@@ -15,6 +15,6 @@ export const getPokemon = async (pokemonName: string) => {
       method: 'POST',
     },
   });
-  const data = result.json().then((res) => res);
+  const data = result.json().then(res => res);
   return data;
 };

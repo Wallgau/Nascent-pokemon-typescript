@@ -1,14 +1,27 @@
 import { ACTION_TYPES } from '../../constants/pokemons';
 
-export interface PokemonsType {
-    pokemons: string[]
+export interface PokemonType {
+        name: string;
+        abilities: string[],
+        moves: string[],
+        picture: string
+    
 }
 
+export type PokemonsType = string[];
+
+export interface PokemonsReducerType {
+    pokemons: PokemonsType,
+    favoritePokemons: PokemonType[]
+}
+
+
 const initialState = {
-    pokemons: []
+    pokemons: [],
+    favoritePokemons: []
   }
   
-  const pokemonsReducer = (state: PokemonsType = initialState, action: any) => {
+  const pokemonsReducer = (state: PokemonsReducerType = initialState, action: any) => {
     switch (action.type) {
       case ACTION_TYPES.GET_POKEMONS:
         const { pokemons } = action;
@@ -16,6 +29,13 @@ const initialState = {
             ...state,
             pokemons,
         };
+        case ACTION_TYPES.ADD_POKEMON:
+            const { favoritePokemons } = action;
+            console.log({ favoritePokemons });
+            return {
+                ...state,
+                favoritePokemons: [...favoritePokemons],
+            };
       default:
         return state
     }

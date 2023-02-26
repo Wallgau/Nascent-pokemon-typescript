@@ -1,47 +1,50 @@
 import { useEffect, useState } from 'react';
 import { v4 } from 'uuid';
-import { getPokemons, getPokemon } from 'service/pokemon';
+import { getPokemon } from 'service/pokemon';
 import Pagination from '../../components/pagination';
 import { useSelector } from 'react-redux';
-import { fetchPokemons } from '../../core/actions/pokemons';
+import { addPokemonToFavoriteList, fetchPokemons } from '../../core/actions/pokemons';
+import { PokemonType } from '../../core/reducers/pokemons';
 import { useAppDispatch } from '../../core/hooks';
 
 
 const Pokemon = () => {
   const dispatch = useAppDispatch();
-  const pokemons = useSelector((state: any) => state.pokemonsReducer.pokemons)
-  const [pokemonList, setPokemonList] = useState([...pokemons]);
-  const [favoritePokemons, setFavoritePokemons] = useState<any[]>([]);
+  const pokemons = useSelector((state: any) => state.pokemonsReducer.pokemons);
+  const favoritesList = useSelector((state: any) => state.pokemonsReducer.favoritePokemons);
+  const [pokemonList, setPokemonList] = useState<string[]>([]);
   const [userSearch, setUserSearch] = useState('');
+
   const pokemonSearch = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const pokemonChoosed = await getPokemon(userSearch);
-    setFavoritePokemons([...favoritePokemons, pokemonChoosed]);
+    dispatch(addPokemonToFavoriteList([...favoritesList], userSearch ));
   };
-  console.log({ favoritePokemons, pokemons });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUserSearch(e.currentTarget.value);
+    setPokemonList(
+      pokemonList.filter((pokemon: string) => pokemon.includes(e.currentTarget.value)),
+    );
+  }
+
   useEffect(() => {
     if (!pokemons.length) dispatch(fetchPokemons())
   }, []);
 
   useEffect(() => {
-    if (pokemons.length && !pokemonList.length) setPokemonList([...pokemons])
-  }, [pokemons]);
-  console.log({pokemonList})
+    if (pokemons?.length && !pokemonList.length || userSearch) setPokemonList([...pokemons]);
+  }, [userSearch, pokemons]);
+
   return (
     <>
       <label htmlFor="pokemon-select">Select a pokemon</label>
       <input list="pokemon-select" 
           value={userSearch}
-          onChange={(e) => {
-            setUserSearch(e.currentTarget.value);
-            setPokemonList(
-              pokemonList.filter((pokemon: string) => pokemon.includes(e.currentTarget.value)),
-            );
-          }}/>
+          onChange={handleChange}/>
       <datalist id="pokemon-select">
         {
-          pokemonList.map((pokemon: string) => (
-            <option value={pokemon}>{pokemon}</option>
+          pokemonList?.map((pokemon: string) => (
+            <option value={pokemon} key={v4()}>{pokemon}</option>
           ))
         }
       </datalist>
@@ -49,28 +52,30 @@ const Pokemon = () => {
           Add to Favorites
         </button>
       <h2>Favorite pokemon</h2>
-      {favoritePokemons.map((pokemon) => (
+      {favoritesList?.map((pokemon: PokemonType) => (
         <ul key={v4()}>
           <li>
-            {pokemon.name}:
-            <img
-              alt={`${pokemon.name} picture`}
-              src={pokemon.sprites.back_default}
-            />
-            <ul>
-              <p>abilities:</p>{' '}
-              {pokemon.abilities.map(
-                (ability: { [key: string]: { name: string; url: string } }) => (
-                  (<li key={ability.ability.url}>{ability.ability.name}</li>)
-                ),
-              )}
-              <p>moves:</p>{' '}
-              {pokemon.moves.map(
-                (move: { [key: string]: { name: string; url: string } }) => (
-                  <li key={move.move.url}>{move.move.name}</li>
-                ),
-              )}
-            </ul>
+            <>
+              {pokemon.name}:
+              <img
+                alt={`${pokemon.name} picture`}
+                src={pokemon.picture}
+              />
+              <ul>
+                <p>abilities:</p>{' '}
+                {pokemon.abilities.map(
+                  (ability) => (
+                    (<li key={`${ability}-${v4()}`}>{ability}</li>)
+                  ),
+                )}
+                <p>moves:</p>{' '}
+                {pokemon.moves.map(
+                  (move) => (
+                    <li key={`${move}-${v4()}`}>{move}</li>
+                  ),
+                )}
+              </ul>
+            </>
           </li>
         </ul>
       ))}
