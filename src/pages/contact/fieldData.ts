@@ -3,7 +3,7 @@ const fields = [
     fieldName: 'name',
     type: 'text',
     required: true,
-    pattern: '[A-Za-z]{3}',
+    pattern: '^[a-zA-Z]+$',
     errorMessage: 'invalid name, please only use letter',
     placeholder: 'Laura'
   },
@@ -11,7 +11,7 @@ const fields = [
     fieldName: 'lastname',
     type: 'text',
     required: true,
-    pattern: '[A-Za-z]{3}',
+    pattern: '^[A-Za-z]+$',
     errorMessage: 'invalid last name, please only use letter',
     placeholder: 'Schiller'
   },
@@ -27,8 +27,7 @@ const fields = [
     fieldName: 'address',
     type: 'text',
     required: true,
-    pattern:
-      '\\d+[ ](?:[A-Za-z0-9.-]+[ ]?)+(?:Avenue|Lane|Road|Boulevard|Drive|Street|Ave|Dr|Rd|Blvd|Ln|St|avenue|lane|road|boulevard|drive|street|ave|dr|rd|blvd|ln|st)\\.?',
+    pattern: '\\d+[ ](?:[A-Za-z0-9.-]+[ ]?)+(?:Avenue|Lane|Road|Boulevard|Drive|Street|Ave|Dr|Rd|Blvd|Ln|St|avenue|lane|road|boulevard|drive|street|ave|dr|rd|blvd|ln|st)\\.?',
     errorMessage: 'invalid address, only letter and number are accepted',
     placeholder: '55 Adelaide Street'
   },
@@ -36,7 +35,7 @@ const fields = [
     fieldName: 'city',
     type: 'text',
     required: true,
-    pattern: '[A-Za-z]{3}',
+    pattern: '^[A-Za-z]+$',
     errorMessage: 'invalid City, only letter are accepted',
     placeholder: 'Toronto'
   },

@@ -1,6 +1,18 @@
 import {render, screen, fireEvent, createEvent} from '@testing-library/react';
 import fields from '../../pages/contact/fieldData';
-import Input, { InputProps } from '.';
+import Input from '.';
+
+interface FieldProps {
+  fieldName: string
+  type: string
+  required: boolean
+  pattern: string
+  errorMessage: string
+  placeholder: string
+}
+
+const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => jest.spyOn;
+const handleValidation = (e: React.ChangeEvent<HTMLInputElement>) => jest.spyOn;
 
 test('test userValues updating input value', () => {
   const userValues = {
@@ -11,8 +23,18 @@ test('test userValues updating input value', () => {
     city: 'Toronto',
     postalCode: 'M5V 2T8'
   }
-  fields.map((field: InputProps, index: number) => {
-    render(<Input {...field}/>)
+  fields.map((field: FieldProps, index: number) => {
+    const fieldName = field.fieldName as keyof typeof userValues;
+    const userValue = userValues[fieldName];
+    render(
+    <Input 
+      handleChange={handleChange} 
+      handleValidation={handleValidation} 
+      value={userValue} 
+      isValid={true}  
+      {...field} 
+    />
+    )
     const setup = () => {
     const input = screen.getByPlaceholderText(field.placeholder) as HTMLInputElement
     return {
@@ -20,8 +42,6 @@ test('test userValues updating input value', () => {
     }
   }
     const {input} = setup();
-    const fieldName = field.fieldName as keyof typeof userValues;
-    const userValue = userValues[fieldName];
     fireEvent.change(input , {target: {value: userValue}});
     expect(input.value).toEqual(userValue);
     fireEvent.blur(input);
@@ -39,8 +59,18 @@ test('test validation', () => {
     city: '444o',
     postalCode: 'ggg'
   }
-  fields.map((field: InputProps, index: number) => {
-    render(<Input {...field}/>)
+  fields.map((field: FieldProps, index: number) => {
+    const fieldName = field.fieldName as keyof typeof userValues;
+    const userValue = userValues[fieldName];
+    render(
+      <Input 
+        handleChange={handleChange} 
+        handleValidation={handleValidation} 
+        value={userValue} 
+        isValid={true}  
+        {...field} 
+      />
+      )
     const setup = () => {
     const input = screen.getByPlaceholderText(field.placeholder) as HTMLInputElement
     return {
@@ -48,8 +78,6 @@ test('test validation', () => {
     }
   }
     const {input} = setup();
-    const fieldName = field.fieldName as keyof typeof userValues;
-    const userValue = userValues[fieldName];
     fireEvent.change(input , {target: {value: userValue}});
     fireEvent.blur(input);
     const spanTextContent: string | null = screen.getAllByTestId("test-span")[index].textContent;

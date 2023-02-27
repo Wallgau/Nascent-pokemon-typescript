@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 export interface InputProps {
   fieldName: string;
   type: string;
@@ -7,6 +5,10 @@ export interface InputProps {
   pattern: string;
   errorMessage: string;
   placeholder: string;
+  value: string;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleValidation: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  isValid: boolean
 }
 const Input = ({
   fieldName,
@@ -15,21 +17,11 @@ const Input = ({
   pattern,
   errorMessage,
   placeholder,
-}: InputProps) => {
-  const [value, setFieldValue] = useState('');
-  const [isValid, setIsValid] = useState(true);
-  const handleValidation = () => {
-    if (value.toString().length > 2 && !value.toString().match(pattern)) {
-      setIsValid(false);
-    } else setIsValid(true);
-  };
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    const userValue = e.target.value;
-    handleValidation();
-    setFieldValue(userValue);
-  };
-  return (
+  handleChange,
+  handleValidation,
+  isValid,
+  value
+}: InputProps) => (
     <div>
       <label htmlFor={fieldName}>{fieldName} (required): </label>
       <input
@@ -39,7 +31,7 @@ const Input = ({
         id={fieldName}
         value={value}
         placeholder={placeholder}
-        onChange={(e) => handleChange(e)}
+        onChange={handleChange}
         onBlur={handleValidation}
         pattern={pattern}
         required
@@ -48,6 +40,5 @@ const Input = ({
       {!isValid ? <span data-testid='test-span'>{errorMessage}</span> : null}
     </div>
   );
-};
 
 export default Input;
