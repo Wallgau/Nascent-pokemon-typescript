@@ -1,28 +1,25 @@
 // import Home from './pages/home';
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from 'react-router-dom';
-import Contact from './pages/contact';
-import Pokemon from './pages/pokemon';
-import Home from './pages/home';
-import Review from './pages/review';
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Contact from "./pages/contact";
+import Pokemon from "./pages/pokemon";
+import Home from "./pages/home";
+import Review from "./pages/review";
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <Home />,
   },
   {
-    path: '/contact',
+    path: "/contact",
     element: <Contact />,
   },
   {
-    path: '/pokemon',
+    path: "/pokemon",
     element: <Pokemon />,
   },
   {
-    path: '/review',
+    path: "/review",
     element: <Review />,
   },
 ]);

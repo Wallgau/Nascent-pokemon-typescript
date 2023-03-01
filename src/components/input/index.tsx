@@ -8,7 +8,7 @@ export interface InputProps {
   value: string;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleValidation: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  isValid: boolean
+  isValid: boolean;
 }
 const Input = ({
   fieldName,
@@ -20,25 +20,25 @@ const Input = ({
   handleChange,
   handleValidation,
   isValid,
-  value
+  value,
 }: InputProps) => (
-    <div>
-      <label htmlFor={fieldName}>{fieldName} (required): </label>
-      <input
-        role='input'
-        type={type}
-        name={fieldName}
-        id={fieldName}
-        value={value}
-        placeholder={placeholder}
-        onChange={handleChange}
-        onBlur={handleValidation}
-        pattern={pattern}
-        required
-        aria-required={required}
-      />
-      {!isValid ? <span data-testid='test-span'>{errorMessage}</span> : null}
-    </div>
-  );
+  <div>
+    <label htmlFor={fieldName}>{fieldName} (required): </label>
+    <input
+      role="input"
+      type={type}
+      name={fieldName}
+      id={fieldName}
+      value={value}
+      placeholder={placeholder}
+      onChange={handleChange}
+      onBlur={handleValidation}
+      pattern={pattern}
+      required
+      aria-required={required}
+    />
+    {!isValid ? <span data-testid="test-span">{errorMessage}</span> : null}
+  </div>
+);
 
 export default Input;

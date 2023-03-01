@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { v4 } from "uuid";
-import './pagination.style.css';
+import "./pagination.style.css";
 
 interface PaginationProps {
   currentPage: number;
@@ -16,11 +16,11 @@ const Pagination = ({
   const pages = Array(numberOfPages).fill(0).map(Number.call, Number);
   const pagesWithLinks = new Map();
   pages?.map((page: number | unknown, index: number) => {
-      pagesWithLinks.set(page, pageLinks[index])
+    pagesWithLinks.set(page, pageLinks[index]);
   });
 
   return (
-      <nav role="navigation" aria-label="Pagination Navigation">
+    <nav role="navigation" aria-label="Pagination Navigation">
       <ul>
         {pages?.map((page: number | unknown) => (
           <li key={v4()}>
