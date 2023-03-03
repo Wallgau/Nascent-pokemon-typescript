@@ -23,21 +23,16 @@
     "sourceType": "module",
     "project": "./tsconfig.json"
   },
-  "extends": [ "plugin:react/recommended", "airbnb-base", "airbnb-typescript"],
+  "extends": [ "airbnb-base", "airbnb-typescript", "plugin:prettier/recommended"],
   "plugins": [
-    "react"
+    "react",
+    "prettier"
   ],
   "rules": {
     "react/react-in-jsx-scope": "off",
+    "import/prefer-default-export": "off",
+    "default-param-last" : "off",
     "eqeqeq": "off",
-    "curly": "error",
-    "@typescript-eslint/quotes": [
-      "error",
-      "single",
-      {
-        "avoidEscape": true,
-        "allowTemplateLiterals": true
-      }
-    ]
+    "curly": "error"
   }
 }

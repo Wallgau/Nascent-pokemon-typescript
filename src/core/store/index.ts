@@ -1,14 +1,14 @@
-import { configureStore } from "@reduxjs/toolkit";
-import thunk from "redux-thunk";
-import userContactDataReducer from "../reducers/userContactData";
-import pokemonsReducer from "../reducers/pokemons";
+import { configureStore } from '@reduxjs/toolkit';
+import thunk from 'redux-thunk';
+import userContactDataReducer from '../reducers/userContactData';
+import pokemonsReducer from '../reducers/pokemons';
 
 const store = configureStore({
-  reducer: {
-    userContactDataReducer,
-    pokemonsReducer,
-  },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),
+    reducer: {
+        userContactDataReducer,
+        pokemonsReducer
+    },
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk)
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
