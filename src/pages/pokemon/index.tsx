@@ -1,6 +1,4 @@
 import { useEffect, useState } from 'react';
-import { v4 } from 'uuid';
-import { getPokemon } from 'service/pokemon';
 import Pagination from '../../components/pagination';
 import { useSelector } from 'react-redux';
 import { addPokemonToFavoriteList, fetchPokemons } from '../../core/actions/pokemons';
@@ -21,9 +19,6 @@ const Pokemon = () => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUserSearch(e.currentTarget.value);
-        setPokemonList(
-            pokemonList.filter((pokemon: string) => pokemon.includes(e.currentTarget.value))
-        );
     };
 
     useEffect(() => {
@@ -31,8 +26,9 @@ const Pokemon = () => {
     }, []);
 
     useEffect(() => {
-        if ((pokemons?.length && !pokemonList.length) || userSearch) setPokemonList([...pokemons]);
-    }, [userSearch, pokemons]);
+        if ((pokemons?.length && !pokemonList.length) || userSearch)
+            setPokemonList([...pokemons, userSearch]);
+    }, [userSearch]);
 
     return (
         <>
@@ -40,7 +36,7 @@ const Pokemon = () => {
             <input list="pokemon-select" value={userSearch} onChange={handleChange} />
             <datalist id="pokemon-select">
                 {pokemonList?.map((pokemon: string) => (
-                    <option value={pokemon} key={v4()}>
+                    <option value={pokemon} key={pokemon}>
                         {pokemon}
                     </option>
                 ))}
@@ -50,7 +46,7 @@ const Pokemon = () => {
             </button>
             <h2>Favorite pokemon</h2>
             {favoritesList?.map((pokemon: PokemonType) => (
-                <ul key={v4()}>
+                <ul key={pokemon.name}>
                     <li>
                         <>
                             {pokemon.name}:
@@ -58,11 +54,11 @@ const Pokemon = () => {
                             <ul>
                                 <p>abilities:</p>{' '}
                                 {pokemon.abilities.map((ability) => (
-                                    <li key={`${ability}-${v4()}`}>{ability}</li>
+                                    <li key={`${ability}-${pokemon.name}`}>{ability}</li>
                                 ))}
                                 <p>moves:</p>{' '}
                                 {pokemon.moves.map((move) => (
-                                    <li key={`${move}-${v4()}`}>{move}</li>
+                                    <li key={`${move}-${pokemon.name}`}>{move}</li>
                                 ))}
                             </ul>
                         </>

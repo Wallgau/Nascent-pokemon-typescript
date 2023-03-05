@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { v4 } from 'uuid';
 import './pagination.style.css';
 
 interface PaginationProps {
@@ -19,7 +18,7 @@ const Pagination = ({ currentPage, numberOfPages, pageLinks }: PaginationProps) 
         <nav role="navigation" aria-label="Pagination Navigation">
             <ul>
                 {pages?.map((page: number | unknown) => (
-                    <li key={v4()}>
+                    <li key={currentPage}>
                         <Link
                             className="navigation"
                             to={pagesWithLinks.get(page)}
