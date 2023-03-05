@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import Pagination from '../../components/pagination';
 import { useSelector } from 'react-redux';
+import Pagination from '../../components/pagination';
 import { addPokemonToFavoriteList, fetchPokemons } from '../../core/actions/pokemons';
 import { PokemonType } from '../../core/reducers/pokemons';
 import { useAppDispatch } from '../../core/hooks';
@@ -26,8 +26,9 @@ const Pokemon = () => {
     }, []);
 
     useEffect(() => {
-        if ((pokemons?.length && !pokemonList.length) || userSearch)
+        if ((pokemons?.length && !pokemonList.length) || userSearch) {
             setPokemonList([...pokemons, userSearch]);
+        }
     }, [userSearch]);
 
     return (
@@ -36,7 +37,7 @@ const Pokemon = () => {
             <input list="pokemon-select" value={userSearch} onChange={handleChange} />
             <datalist id="pokemon-select">
                 {pokemonList?.map((pokemon: string) => (
-                    <option value={pokemon} key={pokemon}>
+                    <option value={pokemon} key={`${pokemon}-list`}>
                         {pokemon}
                     </option>
                 ))}

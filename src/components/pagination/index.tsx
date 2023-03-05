@@ -18,7 +18,7 @@ const Pagination = ({ currentPage, numberOfPages, pageLinks }: PaginationProps) 
         <nav role="navigation" aria-label="Pagination Navigation">
             <ul>
                 {pages?.map((page: number | unknown) => (
-                    <li key={currentPage}>
+                    <li key={`${currentPage}-${page}`}>
                         <Link
                             className="navigation"
                             to={pagesWithLinks.get(page)}
